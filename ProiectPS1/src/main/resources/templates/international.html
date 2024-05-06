@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>International Page</title>
+</head>
+<body>
+<h1 th:text="#{greeting}"></h1> <!-- Textul va fi tradus -->
+<p th:text="#{lang.change}"></p> <!-- Textul va fi tradus -->
+<select id="locales">
+    <option value=""></option>
+    <option value="en" th:text="#{lang.eng}"></option>
+    <option value="fr" th:text="#{lang.fr}"></option>
+</select>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Schimbă limba când se schimbă opțiunea din dropdown
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            if (selectedOption != '') {
+                window.location.replace('international?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+</body>
+</html>

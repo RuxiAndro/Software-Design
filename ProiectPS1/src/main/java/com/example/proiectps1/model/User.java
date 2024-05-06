@@ -1,37 +1,54 @@
 package com.example.proiectps1.model;
 
+import com.example.proiectps1.listeners.UserEventListener;
+import com.example.proiectps1.validators.RoleTypeSubset;
+import com.example.proiectps1.validators.UniqueUsername;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import jakarta.xml.bind.annotation.*;
 import lombok.*;
 
 import java.util.Set;
 
-@AllArgsConstructor //imi face un constructor cu toti parametrii
-@NoArgsConstructor //constructor gol
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 @ToString
-@Builder
-//@ToString(exclude = "bookings")
-@Table(name="user")
+@Table(name = "user")
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD) //Această adnotare specifică modul de acces al JAXB la clasa User. În acest caz, am optat pentru XmlAccessType.FIELD, ceea ce înseamnă că JAXB va accesa direct câmpurile clasei.
+@EntityListeners(UserEventListener.class)
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @XmlElement
     private Long id;
+
+    @XmlElement
     private String username;
+
+    @XmlElement
     private String password;
+
+    @XmlElement
+   // @RoleTypeSubset(anyOf = {RoleType.OWNER, RoleType.ADMIN, RoleType.CLIENT}, message = "Invalid role type")
     private RoleType role;
 
+
+    @XmlElement
     private String phoneNumber;
 
+    @XmlElement
     private String email;
-    public enum RoleType{
+
+   public enum RoleType {
         OWNER, //0
         ADMIN, //1
         CLIENT //2
@@ -49,13 +66,13 @@ public class User {
         this.id = id;
     }
 
-
     @JsonManagedReference
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @XmlElement
     private Set<Booking> bookings;
 
-    //  relație de OneToMany cu entitatea Hotel pentru a defini hotelurile deținute de utilizator
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @XmlElement
     private Set<Hotel> ownedHotels;
 
     @Override
@@ -67,6 +84,4 @@ public class User {
                 ", role=" + role +
                 '}';
     }
-
 }
-

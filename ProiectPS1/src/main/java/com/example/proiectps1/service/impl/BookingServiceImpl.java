@@ -182,6 +182,16 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public void deleteBookingByHotelId(Long hotelId)
+    {
+        Hotel hotel=hotelService.findHotelById(hotelId);
+        // i=bookingRepository.deleteAllByHotel(hotel);
+        //System.out.println(i);
+         bookingRepository.deleteAllByHotel(hotel);
+
+    }
+
+    @Override
     public Booking findBookingById(Long id)
     {
         return bookingRepository.findById(id).orElseThrow();//face parte din clasa Optional ,va returna un obiect wrapped inside an Optional daca nu arunca exceptia NoSuchElementException

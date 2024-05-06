@@ -9,6 +9,7 @@ import ClientHome from './ClientHome';
 import AdminHome from './AdminHome';
 import Register from './Register';
 import HomePage from './HomePage';
+import HotelDetailsClient from './HotelDetailsClient';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
           <Route exact path="/admin-home" element={<AdminHome/>}/>
 
           <Route exact path="/home-page" element={<HomePage />} />
+          <Route exact path="/hotel-details-client/:id" element={<HotelDetailsClient />} />
          
 
         </Switch>

@@ -5,7 +5,6 @@ import com.example.proiectps1.dto.SuccessfulLoginDTO;
 import com.example.proiectps1.dto.UserCreationDTO;
 import com.example.proiectps1.dto.UserDTO;
 import com.example.proiectps1.exceptions.ApiExceptionResponse;
-import com.example.proiectps1.functionalities.SmsModel;
 import com.example.proiectps1.mapper.UserMapper;
 import com.example.proiectps1.model.Hotel;
 import com.example.proiectps1.model.User;
@@ -13,9 +12,7 @@ import com.example.proiectps1.repository.BookingRepository;
 import com.example.proiectps1.repository.HotelRepository;
 import com.example.proiectps1.repository.UserRepository;
 import com.example.proiectps1.service.UserService;
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.type.PhoneNumber;
+
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -170,7 +167,7 @@ public class UserServiceImpl implements UserService {
 
 
 
-    public void sendSms(String phoneNumber)
+ /*   public void sendSms(String phoneNumber)
     {
         Twilio.init(SmsModel.SID, SmsModel.TOKEN);
 
@@ -179,5 +176,5 @@ public class UserServiceImpl implements UserService {
                 new PhoneNumber(SmsModel.phoneNumber),
                 "Hello from Twilio 📞"
         ).create();
-    }
+    }*/
 }

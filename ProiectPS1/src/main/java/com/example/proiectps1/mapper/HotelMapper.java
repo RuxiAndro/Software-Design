@@ -3,6 +3,7 @@ package com.example.proiectps1.mapper;
 import com.example.proiectps1.dto.HotelCreationDTO;
 import com.example.proiectps1.dto.HotelDTO;
 import com.example.proiectps1.model.Hotel;
+import com.example.proiectps1.model.User;
 import com.example.proiectps1.repository.HotelRepository;
 import com.example.proiectps1.repository.UserRepository;
 
@@ -28,17 +29,19 @@ public class HotelMapper {
                 .location(hotel.getLocation())
                 .numberOfRooms(hotel.getNumberOfRooms())
                 .id(hotel.getId())
+                .ownerId(hotel.getOwner() != null ? hotel.getOwner().getId() : null)
                 .image(hotel.getImage())
                 .build();
     }
 
-    public static Hotel toCreationEntity(HotelCreationDTO dto) {
+    public static Hotel toCreationEntity(HotelCreationDTO dto, User owner) {
         return Hotel.builder()
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .location(dto.getLocation())
                 .numberOfRooms(dto.getNumberOfRooms())
                 .image(dto.getImage())
+                .owner(owner)
                 .build();
     }
 }

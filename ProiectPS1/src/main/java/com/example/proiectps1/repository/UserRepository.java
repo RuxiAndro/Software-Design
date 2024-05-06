@@ -10,5 +10,6 @@ public interface UserRepository extends CrudRepository<User,Long> {
 
     User findFirstByUsernameAndPassword(String username,String password);
 
+    boolean existsByUsername(String username);
 }
 

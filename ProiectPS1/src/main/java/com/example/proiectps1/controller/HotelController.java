@@ -5,7 +5,10 @@ import com.example.proiectps1.dto.HotelDTO;
 import com.example.proiectps1.dto.RoomCreationDTO;
 import com.example.proiectps1.dto.RoomDTO;
 import com.example.proiectps1.exceptions.ApiExceptionResponse;
+import com.example.proiectps1.model.Booking;
 import com.example.proiectps1.model.Hotel;
+import com.example.proiectps1.repository.BookingRepository;
+import com.example.proiectps1.service.BookingService;
 import com.example.proiectps1.service.HotelService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,9 +28,14 @@ import java.util.List;
 @CrossOrigin
 public class HotelController {
     private final HotelService hotelService;
+    private final BookingService bookingService;
+    private final BookingRepository bookingRepository;
 
-    public HotelController(HotelService hotelService) {
+
+    public HotelController(HotelService hotelService,BookingService bookingService,BookingRepository bookingRepository) {
         this.hotelService = hotelService;
+        this.bookingService=bookingService;
+        this.bookingRepository=bookingRepository;
     }
 
     @Operation(
@@ -75,6 +83,8 @@ public class HotelController {
     })
     @DeleteMapping("/delete/{id}") //merge deletul dupa nume si merge daca sterg hotelul mi se sterge si camera
     public ResponseEntity deleteHotelByName(@PathVariable Long id) {
+        bookingService.deleteBookingByHotelId(id);
+
         boolean ok = hotelService.deleteHotel(id);
         ResponseEntity response = ok == true
                 ? ResponseEntity.status(HttpStatus.OK).body(ok)

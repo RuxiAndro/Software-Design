@@ -11,6 +11,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
+import { useTranslation } from 'react-i18next';
+import i18n from './i18n';
 
 const HomePage = () => {
     const [location, setLocation] = useState("");
@@ -19,6 +21,7 @@ const HomePage = () => {
     const [guests, setGuests] = useState(1);
     const [results, setResults] = useState([]);
     const [message, setMessage] = useState("");
+    const { t } = useTranslation();
 
     const searchHotels = async () => {
         try {
@@ -88,25 +91,72 @@ const HomePage = () => {
         ));
     };
 
+    const changeLanguage = async (language) => {
+        try {
+            const response = await fetch(`/api/i18n/${language}`);
+            
+            if (!response.ok) {
+                console.error(`HTTP error ${response.status}: ${response.statusText}`);
+                return;
+            } else {
+                console.log('ok');
+            }
+            
+            const contentType = response.headers.get('content-type');
+            console.log('Content-Type:', contentType);
+            
+            if (!contentType || !contentType.includes('application/json')) {
+                console.error(`Expected JSON response but received ${contentType}`);
+                return;
+            }
+            
+            // Preluați răspunsul JSON
+            const translations = await response.json();
+            
+            // Actualizați biblioteca i18n cu noile traduceri
+            i18n.addResourceBundle(language, 'translation', translations);
+            
+            // Setați limba curentă în biblioteca i18n
+            i18n.changeLanguage(language);
+        } catch (error) {
+            console.error('Failed to fetch translations:', error);
+        }
+    };
+    
+    
+    
+    
+
+
+
     return (
         <div>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" style={{ flexGrow: 1 }}>
-                        Book Your Trip
-                    </Typography>
-                    <Button color="inherit">
-                        <Link to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
-                            Sign In
-                        </Link>
+             <AppBar position="static">
+            <Toolbar>
+                <Typography variant="h6" style={{ flexGrow: 1 }}>
+                    Book Your Trip
+                </Typography>
+                <Button color="inherit">
+                    <Link to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        Sign In
+                     </Link>
                     </Button>
-                    <Button color="inherit">
-                        <Link to="/register" style={{ textDecoration: 'none', color: 'inherit' }}>
-                            Sign Up
-                        </Link>
-                    </Button>
-                </Toolbar>
-            </AppBar>
+                <Button color="inherit">
+                    <Link to="/register" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        Sign Up
+                    </Link>
+                </Button>
+
+                {/* Butoane pentru schimbarea limbii */}
+                <div>
+                    <h1>{t('greeting')}</h1>
+                    <p>{t('lang.change')}</p>
+                    <button onClick={() => changeLanguage('en')}>{t('lang.eng')}</button>
+                    <button onClick={() => changeLanguage('fr')}>{t('lang.fr')}</button>
+                </div>
+
+            </Toolbar>
+        </AppBar>
 
             <div>
                 <p>Start planning your next trip with our convenient booking system!</p>

@@ -35,4 +35,6 @@ public interface BookingService {
     BookingDTO makeReservation(Long hotelId, Long roomId, Long userId, BookingCreationDTO bookingDetails);
 
     List<BookingDTO> getBookingsToConfirm();
+
+     void deleteBookingByHotelId(Long hotelId);
 }

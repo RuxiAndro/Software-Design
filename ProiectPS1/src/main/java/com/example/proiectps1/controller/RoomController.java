@@ -37,7 +37,7 @@ public class RoomController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation")
     })
-    @GetMapping
+    @GetMapping("/findAllRooms")
     public ResponseEntity findAllRooms() {
         return ResponseEntity.status(HttpStatus.OK).body(roomService.findAll());
     }

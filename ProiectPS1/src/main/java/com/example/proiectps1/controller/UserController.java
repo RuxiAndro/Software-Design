@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,11 +56,11 @@ public class UserController {
     }*/
 
     @PostMapping("/create")
-    public ResponseEntity createUser(@RequestBody UserCreationDTO user) {
-//        UserDTO newUser = userService.saveUser(user);
-//        return ResponseEntity.ok(newUser);
-        return ResponseEntity.status(HttpStatus.OK).body(userService.saveUser(user));
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserCreationDTO user) {
+        UserDTO newUser = userService.saveUser(user);
+        return ResponseEntity.ok(newUser);
     }
+
 
     @Operation(
             summary = "Delete user",

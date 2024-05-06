@@ -46,12 +46,13 @@ public class Hotel { //clasa Hotel ,mai trebuie sa fac clasa Camera si sa fac o 
 
     @JsonBackReference
    // @JsonManagedReference
-    @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)//mappedBy = "hotel",
+    @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL, fetch = FetchType.EAGER)//mappedBy = "hotel",
     private Set<Room> rooms;
 
-//    @JsonBackReference //ar fi trebuit sa mearga
-//    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER) //the field in the Booking entity that owns the relationship
-//    private Set<Booking> bookings; //ca sa asigut unicitatea fiecarei rezervari
+    @JsonBackReference //ar fi trebuit sa mearga
+    //@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER) //the field in the Booking entity that owns the relationship
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.EAGER) //the field in the Booking entity that owns the relationship
+    private Set<Booking> bookings; //ca sa asigut unicitatea fiecarei rezervari
 
     @JsonBackReference
     @ManyToOne         //owner_id e cheie straina in Hotel pt User

@@ -82,6 +82,7 @@ class OwnerHotelsList extends Component {
                           </ListItem>
                       ))}
                   </ul>
+                  
               </div>
           )}
       </div>

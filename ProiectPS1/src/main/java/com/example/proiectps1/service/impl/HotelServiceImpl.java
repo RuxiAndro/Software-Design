@@ -11,6 +11,7 @@ import com.example.proiectps1.model.User;
 import com.example.proiectps1.repository.BookingRepository;
 import com.example.proiectps1.repository.HotelRepository;
 import com.example.proiectps1.repository.UserRepository;
+import com.example.proiectps1.service.BookingService;
 import com.example.proiectps1.service.HotelService;
 import jakarta.persistence.EntityNotFoundException;
 import com.example.proiectps1.service.RoomService;
@@ -38,7 +39,7 @@ public class HotelServiceImpl implements HotelService {
     private final HotelRepository hotelRepository;
     private final UserRepository userRepository;
 
-    private final BookingRepository bookingRepository;
+
     private final RoomService roomService;
 
     /*public HotelServiceImpl(RoomService roomService,HotelRepository hotelRepository,UserRepository userRepository,BookingRepository bookingRepository) {
@@ -123,16 +124,8 @@ public class HotelServiceImpl implements HotelService {
         if (hotelOptional.isPresent()) {
             Hotel hotel = hotelOptional.get();
 
-            // Obțineți rezervările asociate hotelului
-            List<Booking> bookings = bookingRepository.findAllByHotel(hotel);
-
-            // Ștergeți fiecare rezervare asociată hotelului
-            for (Booking booking : bookings) {
-                bookingRepository.delete(booking);
-            }
-
             // Ștergeți hotelul
-            hotelRepository.delete(hotel);
+             hotelRepository.delete(hotel);
         }
 
         // Returnați dacă hotelul a fost șters cu succes
@@ -177,6 +170,22 @@ public class HotelServiceImpl implements HotelService {
     }*/
    @Override
    public HotelDTO saveHotel(HotelCreationDTO hotel, Long ownerId) {
+       // Find the owner using the ownerId
+       Optional<User> ownerOptional = userRepository.findById(ownerId);
+       if (ownerOptional.isPresent()) {
+           User owner = ownerOptional.get();
+           // Use the owner information in the toCreationEntity method
+           Hotel entity = HotelMapper.toCreationEntity(hotel, owner);
+           // Save the entity
+           entity = hotelRepository.save(entity);
+           // Return the DTO
+           return HotelMapper.toDto(entity);
+       } else {
+           throw new IllegalStateException("Owner with ID " + ownerId + " not found.");
+       }
+   }
+
+  /* public HotelDTO saveHotel(HotelCreationDTO hotel, Long ownerId) {
        // Transformă DTO-ul în entitatea Hotel
        Hotel entity = HotelMapper.toCreationEntity(hotel);
 
@@ -194,7 +203,7 @@ public class HotelServiceImpl implements HotelService {
        entity = hotelRepository.save(entity);
 
        return HotelMapper.toDto(entity);
-   }
+   }*/
 
     @Override
     public List<Hotel> findHotelsByOwnerId(Long ownerId) {
